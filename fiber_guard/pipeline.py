@@ -17,6 +17,11 @@ class AnalyzingPipeline:
         self.processes.append(
             mp.Process(target=self._input, args=(self.data_gen, self.queues[0]))
         )
+        self.processes.append(
+            mp.Process(
+                target=self.addition,
+            )
+        )
 
     def execute_pipeline(self):
         # start processes
@@ -46,3 +51,7 @@ class AnalyzingPipeline:
             in_q.put(i)
 
         self.out_of_data.value = True
+
+    def addition(self):
+        while not self.stop_pipeline.value:
+            print(1 + 1)
